@@ -14,6 +14,6 @@ public interface CustomerService {
 
     List<CustomerDto> fetchAllCustomer(Pageable pageable);
 
-    Optional<CustomerDto> fetchCustomerById(Long customerId);
+    Optional<CustomerDto> fetchCustomerById(String customerId);
 
 }

@@ -6,6 +6,7 @@ import com.greeting.exception.SomethingWentWrong;
 import com.greeting.mapper.CustomerMapper;
 import com.greeting.repo.CustomerRepo;
 import com.greeting.rquest.CustomerRequest;
+import com.greeting.util.EncryptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.greeting.util.EncryptionUtil.decode;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -54,8 +57,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerDto> fetchCustomerById(Long customerId) {
-        return customerRepo.fetchCustomerById(customerId);
+    public Optional<CustomerDto> fetchCustomerById(String customerId) {
+        return customerRepo.fetchCustomerById(decode(customerId));
     }
 
 

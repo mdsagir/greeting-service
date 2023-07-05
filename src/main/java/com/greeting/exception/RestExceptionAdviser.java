@@ -55,7 +55,6 @@ public class RestExceptionAdviser {
         return new ResponseEntity<>(dto, INTERNAL_SERVER_ERROR);
     }
 
-    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
         var errors = new HashMap<String, String>();
@@ -63,6 +62,12 @@ public class RestExceptionAdviser {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
         log.error("Error {}", errors);
+        return ResponseEntity.badRequest().build();
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException ex) {
+        log.error("Error {}", ex.getMessage());
         return ResponseEntity.badRequest().build();
     }
 

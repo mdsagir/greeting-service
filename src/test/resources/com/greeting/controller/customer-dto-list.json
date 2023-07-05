@@ -1,0 +1,14 @@
+[
+  {
+    "customerId": "1",
+    "name": "sagir",
+    "email": "tech.sagir@gmail.com",
+    "mobile": "9052708146"
+  },
+  {
+    "customerId": "2",
+    "name": "asim",
+    "email": "tech.asim@gmail.com",
+    "mobile": "9052708140"
+  }
+]

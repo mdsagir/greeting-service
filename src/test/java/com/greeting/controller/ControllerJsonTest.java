@@ -1,5 +1,6 @@
 package com.greeting.controller;
 
+import com.greeting.dto.CustomerDto;
 import com.greeting.rquest.CustomerRequest;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,11 @@ class ControllerJsonTest {
 
     @Autowired
     private JacksonTester<CustomerRequest> json;
+
     @Autowired
-    private JacksonTester<CustomerRequest[]> jsonList;
+    private JacksonTester<CustomerDto> customerDto;
+    @Autowired
+    private JacksonTester<CustomerDto[]> jsonList;
 
     @Test
     void customerSerializationTest() throws IOException {
@@ -45,46 +49,63 @@ class ControllerJsonTest {
     }
 
     @Test
-    void customerListSerializationTest() throws IOException {
-        var customerList = Arrays.array(new CustomerRequest("sagir", "tech.sagir@gmail.com", "9052708146"),
-                new CustomerRequest("neha", "tech.neha@gmail.com", "1234567890"),
-                new CustomerRequest("asim", "tech.asim@gmail.com", "1234567568"),
-                new CustomerRequest("sara", "tech.sara@gmail.com", "1234567123"));
+    void customerDtoListSerializationTest() throws IOException {
+        var customerList = Arrays.array(new CustomerDto("1", "sagir", "tech.sagir@gmail.com", "9052708146"),
+                new CustomerDto("2", "asim", "tech.asim@gmail.com", "9052708140"));
 
-        assertThat(jsonList.write(customerList)).isStrictlyEqualToJson("customer-list.json");
+        assertThat(jsonList.write(customerList)).isStrictlyEqualToJson("customer-dto-list.json");
     }
 
     @Test
-    void customerListDeserializationTest() throws IOException {
+    void customerDtoListDeserializationTest() throws IOException {
         String expected = """
                 [
                   {
+                    "customerId": "1",
                     "name": "sagir",
                     "email": "tech.sagir@gmail.com",
                     "mobile": "9052708146"
                   },
                   {
-                    "name": "neha",
-                    "email": "tech.neha@gmail.com",
-                    "mobile": "1234567890"
-                  },
-                  {
+                    "customerId": "2",
                     "name": "asim",
                     "email": "tech.asim@gmail.com",
-                    "mobile": "1234567568"
-                  },
-                  {
-                    "name": "sara",
-                    "email": "tech.sara@gmail.com",
-                    "mobile": "1234567123"
+                    "mobile": "9052708140"
                   }
                 ]
                 """;
-        var customerList = Arrays.array(new CustomerRequest("sagir", "tech.sagir@gmail.com", "9052708146"),
-                new CustomerRequest("neha", "tech.neha@gmail.com", "1234567890"),
-                new CustomerRequest("asim", "tech.asim@gmail.com", "1234567568"),
-                new CustomerRequest("sara", "tech.sara@gmail.com", "1234567123"));
+        var customerList = Arrays.array(new CustomerDto("1", "sagir", "tech.sagir@gmail.com", "9052708146"),
+                new CustomerDto("2", "asim", "tech.asim@gmail.com", "9052708140"));
         assertThat(jsonList.parse(expected).getObject()).isEqualTo(customerList);
+    }
+
+    @Test
+    void customerDtoSerializationTest() throws IOException {
+        var customer = new CustomerDto("1", "sagir", "tech.sagir@gmail.com", "9052708146");
+
+        assertThat(customerDto.write(customer)).isStrictlyEqualToJson("customer-dto.json");
+        assertThat(customerDto.write(customer)).extractingJsonPathStringValue("@.name").isEqualTo("sagir");
+        assertThat(customerDto.write(customer)).extractingJsonPathStringValue("@.customerId").isEqualTo("1");
+        assertThat(customerDto.write(customer)).extractingJsonPathStringValue("@.email").isEqualTo("tech.sagir@gmail.com");
+        assertThat(customerDto.write(customer)).extractingJsonPathStringValue("@.mobile").isEqualTo("9052708146");
+    }
+
+    @Test
+    void customerDtoDeserializationTest() throws IOException {
+        String expected = """
+                {
+                  "customerId": "1",
+                  "name": "sagir",
+                  "email": "tech.sagir@gmail.com",
+                  "mobile": "9052708146"
+                }
+                """;
+        assertThat(customerDto.parse(expected).getObject())
+                .isEqualTo(new CustomerDto("1", "sagir", "tech.sagir@gmail.com", "9052708146"));
+        assertThat(customerDto.parseObject(expected).getCustomerId()).isEqualTo("1");
+        assertThat(customerDto.parseObject(expected).getName()).isEqualTo("sagir");
+        assertThat(customerDto.parseObject(expected).getEmail()).isEqualTo("tech.sagir@gmail.com");
+        assertThat(customerDto.parseObject(expected).getMobile()).isEqualTo("9052708146");
     }
 
 }

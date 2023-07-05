@@ -42,7 +42,7 @@ class CustomerServiceTest {
     void whenCustomerFoundByIdThenReturnInstance() {
         Long id = 1L;
         when(customerRepo.fetchCustomerById(id)).thenReturn(Optional.of(just()));
-        var customerDto = customerService.fetchCustomerById(id);
+        var customerDto = customerService.fetchCustomerById(String.valueOf(id));
         assertThat(customerDto).isNotEmpty();
     }
 
@@ -50,7 +50,7 @@ class CustomerServiceTest {
     void whenCustomerIdNotFoundThenReturnEmpty() {
         Long id = 1L;
         when(customerRepo.fetchCustomerById(id)).thenReturn(empty());
-        var customerDto = customerService.fetchCustomerById(id);
+        var customerDto = customerService.fetchCustomerById(String.valueOf(id));
         assertThat(customerDto).isEmpty();
     }
 
