@@ -6,7 +6,6 @@ import com.greeting.exception.SomethingWentWrong;
 import com.greeting.mapper.CustomerMapper;
 import com.greeting.repo.CustomerRepo;
 import com.greeting.rquest.CustomerRequest;
-import com.greeting.util.EncryptionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.greeting.util.EncryptionUtil.decode;
+import static com.greeting.util.EncryptionUtil.encode;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Long addCustomer(CustomerRequest customerRequest) {
+    public String addCustomer(CustomerRequest customerRequest) {
         try {
             var email = customerRequest.email();
             var exists = customerRepo.existsByEmail(email);
@@ -40,7 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
             var customer = customerMapper.newCustomerEntity(customerRequest);
             var save = customerRepo.save(customer);
             LOGGER.info("Added new user name: {}", customerRequest.name());
-            return save.getId();
+            return encode(save.getId());
         } catch (Exception exception) {
             if (exception instanceof ConflictException conflictException) {
                 LOGGER.warn("Error: {}", conflictException.getMessage());

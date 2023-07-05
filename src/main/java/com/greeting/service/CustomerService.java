@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface CustomerService {
 
-    Long addCustomer(CustomerRequest customerRequest);
+    String addCustomer(CustomerRequest customerRequest);
 
     List<CustomerDto> fetchAllCustomer(Pageable pageable);
 

@@ -35,7 +35,7 @@ class CustomerControllerTest {
     void whenNewCustomerThenReturn201() throws Exception {
         Long id = 10L;
         var customer = new CustomerRequest("sagir", "tech.sagir@gmail.com", "9052708146");
-        given(customerService.addCustomer(customer)).willReturn(id);
+        given(customerService.addCustomer(customer)).willReturn(String.valueOf(id));
         var mvcResult = mockMvc.perform(post("/customer")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(customer)))
