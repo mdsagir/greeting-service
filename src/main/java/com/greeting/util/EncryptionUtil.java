@@ -2,7 +2,6 @@ package com.greeting.util;
 
 import com.greeting.exception.BadRequestException;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -11,9 +10,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
-import java.util.Objects;
-
-import static java.lang.String.valueOf;
 
 public class EncryptionUtil {
 
@@ -29,7 +25,8 @@ public class EncryptionUtil {
     }
 
     public static Long decode(String id) {
-        return Long.parseLong(decoding(id));
+        var decoding = decoding(id);
+        return Long.parseLong(decoding);
     }
 
     public static String encoding(String input) {
@@ -45,9 +42,8 @@ public class EncryptionUtil {
             return res;
 
         } catch (Exception e) {
-
+            throw new BadRequestException("Invalid id");
         }
-        return "";
     }
 
     public static String decoding(String token) {

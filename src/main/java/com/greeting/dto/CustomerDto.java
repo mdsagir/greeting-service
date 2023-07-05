@@ -1,11 +1,8 @@
 package com.greeting.dto;
 
-import com.greeting.util.EncryptionUtil;
-
 import java.util.Objects;
 
 import static com.greeting.util.EncryptionUtil.encode;
-import static java.lang.String.valueOf;
 
 public class CustomerDto {
     private String customerId;

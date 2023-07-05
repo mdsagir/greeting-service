@@ -40,17 +40,17 @@ class CustomerServiceTest {
 
     @Test
     void whenCustomerFoundByIdThenReturnInstance() {
-        Long id = 1L;
-        when(customerRepo.fetchCustomerById(id)).thenReturn(Optional.of(just()));
-        var customerDto = customerService.fetchCustomerById(String.valueOf(id));
+        String id = "bDUa_bWoHACkHduUEgWyFE5wGEfuGzdf";
+        when(customerRepo.fetchCustomerById(4L)).thenReturn(Optional.of(just()));
+        var customerDto = customerService.fetchCustomerById(id);
         assertThat(customerDto).isNotEmpty();
     }
 
     @Test
     void whenCustomerIdNotFoundThenReturnEmpty() {
-        Long id = 1L;
-        when(customerRepo.fetchCustomerById(id)).thenReturn(empty());
-        var customerDto = customerService.fetchCustomerById(String.valueOf(id));
+        String id = "bDUa_bWoHACkHduUEgWyFE5wGEfuGzdf";
+        when(customerRepo.fetchCustomerById(4L)).thenReturn(empty());
+        var customerDto = customerService.fetchCustomerById(id);
         assertThat(customerDto).isEmpty();
     }
 
@@ -80,7 +80,7 @@ class CustomerServiceTest {
         when(customerMapper.newCustomerEntity(customerRequest)).thenReturn(customer);
         when(customerRepo.save(customer)).thenReturn(customer);
         var id = customerService.addCustomer(customerRequest);
-        assertThat(id).isNotNull().isEqualTo(customerId);
+        assertThat(id).isNotNull().isEqualTo(String.valueOf(customerId));
     }
 
     @Test

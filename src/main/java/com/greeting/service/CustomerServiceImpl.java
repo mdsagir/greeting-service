@@ -58,7 +58,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Optional<CustomerDto> fetchCustomerById(String customerId) {
-        return customerRepo.fetchCustomerById(decode(customerId));
+        var decode = decode(customerId);
+        return customerRepo.fetchCustomerById(decode);
     }
 
 
