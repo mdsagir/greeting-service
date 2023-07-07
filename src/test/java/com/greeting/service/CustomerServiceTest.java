@@ -6,6 +6,7 @@ import com.greeting.exception.SomethingWentWrong;
 import com.greeting.mapper.CustomerMapper;
 import com.greeting.repo.CustomerRepo;
 import com.greeting.rquest.CustomerRequest;
+import com.greeting.util.EncryptionUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.greeting.dto.CustomerDto.just;
+import static com.greeting.util.EncryptionUtil.encode;
 import static java.util.List.of;
 import static java.util.Optional.empty;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,7 +82,7 @@ class CustomerServiceTest {
         when(customerMapper.newCustomerEntity(customerRequest)).thenReturn(customer);
         when(customerRepo.save(customer)).thenReturn(customer);
         var id = customerService.addCustomer(customerRequest);
-        assertThat(id).isNotNull().isEqualTo(String.valueOf(customerId));
+        assertThat(id).isNotNull().isEqualTo(encode(customerId));
     }
 
     @Test
