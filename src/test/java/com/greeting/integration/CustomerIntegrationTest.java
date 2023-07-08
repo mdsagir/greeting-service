@@ -2,28 +2,35 @@ package com.greeting.integration;
 
 import com.greeting.config.TestContainerConfig;
 import com.greeting.dto.CustomerDto;
+import com.greeting.dto.ResponseDto;
+import com.greeting.repo.CustomerRepo;
 import com.greeting.rquest.CustomerRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import(TestContainerConfig.class)
-@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 class CustomerIntegrationTest {
 
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private CustomerRepo customerRepo;
+
+    @BeforeEach
+    void cleanUp() {
+        customerRepo.deleteAll();
+    }
 
     @Test
     void shouldCreateANewCustomer() {
@@ -46,9 +53,10 @@ class CustomerIntegrationTest {
     @Test
     void shouldReturnNotFoundIfByGivenCustomerIdNotPresent() {
 
-        var customerResponse = restTemplate.getForEntity("/customer/1", CustomerDto.class);
+        var customerResponse = restTemplate.getForEntity("/customer/1", ResponseDto.class);
         assertThat(customerResponse.getStatusCode()).isEqualTo(NOT_FOUND);
-        var responseBody = customerResponse.getBody();
-        assertThat(responseBody).isNull();
+        ResponseDto responseBody = customerResponse.getBody();
+        assertThat(responseBody).isNotNull();
+        assertThat(responseBody.message()).isEqualTo("INVALID ID");
     }
 }

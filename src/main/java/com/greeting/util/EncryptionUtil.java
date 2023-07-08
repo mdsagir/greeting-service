@@ -1,7 +1,9 @@
 package com.greeting.util;
 
 import com.greeting.exception.BadRequestException;
+import com.greeting.exception.DataNotFoundException;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -15,6 +17,7 @@ public class EncryptionUtil {
 
     private static final byte[] SALT = {(byte) 0x21, (byte) 0x21, (byte) 0xF0, (byte) 0x55, (byte) 0xC3, (byte) 0x9F, (byte) 0x5A, (byte) 0x75};
     private static final int ITERATION_COUNT = 31;
+    private static final String INVALID = "INVALID ID";
 
     private EncryptionUtil() {
     }
@@ -26,6 +29,10 @@ public class EncryptionUtil {
 
     public static Long decode(String id) {
         var decoding = decoding(id);
+        if (!StringUtils.hasText(decoding)) {
+
+            throw new DataNotFoundException(INVALID);
+        }
         return Long.parseLong(decoding);
     }
 
@@ -42,7 +49,7 @@ public class EncryptionUtil {
             return res;
 
         } catch (Exception e) {
-            throw new BadRequestException("Invalid id");
+            throw new BadRequestException(INVALID);
         }
     }
 
@@ -58,7 +65,7 @@ public class EncryptionUtil {
             byte[] decoded = dcipher.doFinal(dec);
             return new String(decoded);
         } catch (Exception e) {
-            throw new BadRequestException("Invalid id");
+            throw new DataNotFoundException(INVALID);
         }
     }
 }
