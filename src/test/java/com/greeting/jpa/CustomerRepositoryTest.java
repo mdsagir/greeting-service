@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
@@ -18,7 +19,9 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = NONE)
-@Import(TestContainerConfig.class)
+@TestPropertySource(properties = {
+        "spring.datasource.url=jdbc:tc:mysql:latest:///"
+})
 class CustomerRepositoryTest {
 
     @Autowired
