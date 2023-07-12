@@ -17,6 +17,9 @@ spec:
       containers:
         - name: greeting-service
           image: "ghcr.io/mdsagir/greeting-service:latest"
+          volumeMounts:
+            - mountPath: /workspace/config
+              name: greeting-config
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -24,6 +27,10 @@ spec:
                 command: [ "sh", "-c", "sleep 5" ]
           ports:
             - containerPort: 8080
-          env:
-            - name: GREETING_MESSAGE
-              value: Hello from Kubernetes!
+ #         env:
+  #          - name: GREETING_MESSAGE
+  #            value: Hello from Kubernetes!
+      volumes:
+        - name: greeting-config
+          configMap:
+            name: greeting-config

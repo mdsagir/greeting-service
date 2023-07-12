@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: greeting-config
+data:
+  application.yml: |
+    greeting:
+      message: Welcome from configmap!
+    server:
+      shutdown: graceful
+    spring:
+      lifecycle:
+        timeout-per-shutdown-phase: 15s
