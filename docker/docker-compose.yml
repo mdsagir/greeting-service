@@ -2,29 +2,9 @@ version: "3.8"
 services:
 
   catalog-service:
-    depends_on:
-      - greeting-mysql
     image: "ghcr.io/mdsagir/greeting-service:latest"
     container_name: "greeting-service"
     ports:
       - "8080:8080"
     environment:
-      - BPL_JVM_THREAD_COUNT=50
-      - BPL_DEBUG_ENABLED=true
-      - BPL_DEBUG_PORT=8001
-      - SPRING_DATASOURCE_URL=jdbc:mysql://greeting-mysql:3306/greeting
-      - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_DATASOURCE_USER=user
-
-
-  greeting-mysql:
-    image: mysql:latest
-    container_name: greeting-mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: greeting
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
+      - GREETING_MESSAGE=Hello from Docker!

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: greeting-service
-          image: greeting-service
+          image: "ghcr.io/mdsagir/greeting-service:latest"
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:

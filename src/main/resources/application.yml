@@ -3,7 +3,7 @@ spring:
     name: greeting-service
   datasource:
     username: freedb_user_S
-    password: 5Ym9xhFwqK9&9es
+    password: keep_your_password_here
     url: jdbc:mysql://sql.freedb.tech:3306/freedb_greeting
     hikari:
       connection-timeout: 2000
